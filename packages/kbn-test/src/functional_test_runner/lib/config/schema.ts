@@ -174,6 +174,7 @@ export const schema = Joi.object()
           !!process.env.CI && !process.env.DISABLE_CI_LOG_OUTPUT_CAPTURE
         ),
         sendToCiStats: Joi.boolean().default(!!process.env.CI),
+        enableVoCReporter: Joi.bool().default(process.env.ENABLE_VOC_REPORTER || 'yes')
       })
       .default(),
 
