@@ -10,6 +10,7 @@
 import { format } from 'util';
 
 import Mocha from 'mocha';
+import constants from 'mocha/lib/runner'
 import { ToolingLogTextWriter } from '@kbn/tooling-log';
 import { CiStatsReporter } from '@kbn/ci-stats-reporter';
 import moment from 'moment';
@@ -20,6 +21,7 @@ import * as symbols from './symbols';
 import { ms } from './ms';
 import { writeEpilogue } from './write_epilogue';
 import { setupCiStatsFtrTestGroupReporter } from './ci_stats_ftr_reporter';
+import { setupVoCReporter } from './voc_reporter';
 
 export function MochaReporterProvider({ getService }) {
   const log = getService('log');
@@ -64,6 +66,11 @@ export function MochaReporterProvider({ getService }) {
             runner,
           });
         }
+      }
+
+      if (config.get('enableVoCReporter')) {
+        setupVoCReporter(config, lifecycle, runner, config.get(""))
+        log.info("🔍👀 VoC reporter is active")
       }
     }
 
