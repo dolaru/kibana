@@ -6,6 +6,15 @@
  * your election, the "Elastic License 2.0", the "GNU Affero General Public
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
+import { RunWithCommands } from '@kbn/dev-cli-runner';
+import { startServer } from './start_server';
+import { uploadEvents } from './upload_events';
 
-require('../src/setup_node_env');
-require('@kbn/scout').startServersCli();
+export async function run() {
+  await new RunWithCommands(
+    {
+      description: 'Scout CLI',
+    },
+    [startServer, uploadEvents]
+  ).execute();
+}

@@ -10,10 +10,10 @@
 import path from 'path';
 import * as Fs from 'fs';
 import { ServerlessProjectType } from '@kbn/es';
-import { REPO_ROOT } from '@kbn/repo-info';
-import { ScoutServerConfig } from '../types';
 import getopts from 'getopts';
 import { ToolingLog } from '@kbn/tooling-log';
+import { ScoutServerConfig } from '../types';
+import { SCOUT_SERVERS_ROOT } from '../paths';
 
 export const getProjectType = (kbnServerArgs: string[]) => {
   const options = getopts(kbnServerArgs);
@@ -26,13 +26,12 @@ export const saveTestServersConfigOnDisk = (
 ) => {
   const jsonData = JSON.stringify(testServersConfig, null, 2);
   // create temp directory to store test servers confugration
-  const tempDirPath = path.join(REPO_ROOT, '.scout', 'servers');
-  if (!Fs.existsSync(tempDirPath)) {
-    log.debug(`scout: creating new config directory: ${tempDirPath}`);
-    Fs.mkdirSync(tempDirPath, { recursive: true });
+  if (!Fs.existsSync(SCOUT_SERVERS_ROOT)) {
+    log.debug(`scout: creating new config directory: ${SCOUT_SERVERS_ROOT}`);
+    Fs.mkdirSync(SCOUT_SERVERS_ROOT, { recursive: true });
   }
 
-  const serversConfigPath = path.join(tempDirPath, `local.json`);
+  const serversConfigPath = path.join(SCOUT_SERVERS_ROOT, `local.json`);
   // saving file with local servers configuration
   Fs.writeFileSync(serversConfigPath, jsonData, 'utf-8');
   log.info(`scout: test configuration was saved to ${serversConfigPath}`);

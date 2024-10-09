@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
  * Copyright Elasticsearch B.V. and/or licensed to Elasticsearch B.V. under one
  * or more contributor license agreements. Licensed under the "Elastic License
@@ -7,7 +9,5 @@
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
 
-export * from './src/paths';
-export * as cli from './src/cli';
-export * as datasources from './src/datasources';
-export * from './src/reporting';
+require('../src/setup_node_env');
+require('@kbn/scout').cli.run();

@@ -32,27 +32,32 @@ test.describe('Discover app - value suggestions', () => {
     await discoverApp.goto();
   });
 
-  test('dont show up if outside of range', async ({ page }) => {
-    const fromTime = 'Mar 1, 2020 @ 00:00:00.000';
-    const toTime = 'Nov 1, 2020 @ 00:00:00.000';
-    const datePicker = new DatePicker(page);
-    await datePicker.setAbsoluteRange(fromTime, toTime);
+  test("don't show up if outside of range", async ({ page }) => {
+    // Set time picker range
+    await new DatePicker(page).setAbsoluteRange(
+      /* from */ 'Mar 1, 2020 @ 00:00:00.000',
+      /* to */ 'Nov 1, 2020 @ 00:00:00.000'
+    );
 
-    await page.fill(subj('queryInput'), 'extension.raw : ');
+    // Input partial query
+    await page.locator(subj('queryInput')).fill('extension.raw: ');
+
+    // Check suggestions
     await expect(page.locator(subj('autoCompleteSuggestionText'))).toHaveCount(0);
   });
 
   test('show up if in range', async ({ page }) => {
-    const fromTime = 'Sep 19, 2015 @ 06:31:44.000';
-    const toTime = 'Sep 23, 2015 @ 18:31:44.000';
-    const datePicker = new DatePicker(page);
-    await datePicker.setAbsoluteRange(fromTime, toTime);
+    // Set time picker range
+    await new DatePicker(page).setAbsoluteRange(
+      /* from */ 'Sep 19, 2015 @ 06:31:44.000',
+      /* to */ 'Sep 23, 2015 @ 18:31:44.000'
+    );
 
-    await page.fill(subj('queryInput'), 'extension.raw : ');
-    await expect(page.locator(subj('autoCompleteSuggestionText'))).toHaveCount(5);
-    const actualSuggestions = await page
-      .locator(subj('autoCompleteSuggestionText'))
-      .allTextContents();
-    expect(actualSuggestions.join(',')).toContain('jpg');
+    // Input partial query
+    await page.locator(subj('queryInput')).fill('extension.raw: ');
+
+    // Check suggestions
+    const suggestions = page.locator(subj('autoCompleteSuggestionText'));
+    await expect(suggestions).toHaveText(['"css"', '"gif"', '"jpg"', '"php"', '"png"']);
   });
 });

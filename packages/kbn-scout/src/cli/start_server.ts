@@ -7,28 +7,25 @@
  * License v3.0 only", or the "Server Side Public License, v 1".
  */
 
-import { run } from '@kbn/dev-cli-runner';
-
-import { initLogsDir } from '@kbn/test';
+import { Command } from '@kbn/dev-cli-runner';
+import { initLogsDir } from '@kbn/test/src/functional_tests/lib';
 
 import { startServers, parseFlags, FLAG_OPTIONS } from '../servers';
 
 /**
  * Start servers
  */
-export function startServersCli() {
-  run(
-    async ({ flagsReader: flags, log }) => {
-      const options = parseFlags(flags);
+export const startServer: Command<void> = {
+  name: 'start-server',
+  description: 'Start a Kibana instance for testing purposes',
+  flags: FLAG_OPTIONS,
+  run: async ({ flagsReader, log }) => {
+    const options = parseFlags(flagsReader);
 
-      if (options.logsDir) {
-        initLogsDir(log, options.logsDir);
-      }
-
-      await startServers(log, options);
-    },
-    {
-      flags: FLAG_OPTIONS,
+    if (options.logsDir) {
+      initLogsDir(log, options.logsDir);
     }
-  );
-}
+
+    await startServers(log, options);
+  },
+};

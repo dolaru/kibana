@@ -20,6 +20,6 @@
     "@kbn/ci-stats-reporter",
     "@kbn/repo-info",
     "@kbn/es",
-    "@kbn/dev-proc-runner",
+    "@kbn/dev-proc-runner"
   ]
 }

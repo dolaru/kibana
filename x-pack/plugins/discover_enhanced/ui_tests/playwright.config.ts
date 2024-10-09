@@ -8,6 +8,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as Path from 'path';
 import { REPO_ROOT } from '@kbn/repo-info';
+import { scoutPlaywrightReporter } from '@kbn/scout';
 
 interface ScoutConfig {
   serversConfigDir: string;
@@ -36,6 +37,7 @@ export default defineConfig<ScoutConfig>({
   reporter: [
     ['html', { outputFolder: './output/reports', open: 'never' }], // HTML report configuration
     ['json', { outputFile: './output/reports/test-results.json' }], // JSON report
+    scoutPlaywrightReporter(), // Scout report,
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
