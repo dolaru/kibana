@@ -6,6 +6,8 @@
  */
 
 import { defineConfig, devices } from '@playwright/test';
+import { AppExQAReporterOptions } from '@kbn/test/src/reporting/playwright';
+import path from 'node:path';
 
 /**
  * Read environment variables from file.
@@ -30,6 +32,10 @@ export default defineConfig({
   reporter: [
     ['html', { outputFolder: './output/reports', open: 'never' }], // HTML report configuration
     ['json', { outputFile: './output/reports/test-results.json' }], // JSON report
+    [
+      '@kbn/test/src/reporting/playwright.ts',
+      { outputPath: path.resolve('./output/reports') } as AppExQAReporterOptions,
+    ],
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
